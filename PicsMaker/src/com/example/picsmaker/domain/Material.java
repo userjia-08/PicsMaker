@@ -1,3 +1,4 @@
+
 package com.example.picsmaker.domain;
 import com.example.picsmaker.R;
 
@@ -417,3 +418,4 @@ public class Material extends ImageView {
 
 
 } 
+

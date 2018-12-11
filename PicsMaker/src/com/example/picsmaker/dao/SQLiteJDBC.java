@@ -1,3 +1,4 @@
+
 package com.example.picsmaker.dao;
 
 import java.sql.*;
@@ -29,22 +30,28 @@ class SQLiteJDBC {
 		    try {
 		    	c = connectSQLiteDB();
 		       stmt = c.createStatement();
-		     //创建账户表
-		      String sql = "CREATE TABLE ACCOUNT " +
-		                   "(Acc_num   TEXT PRIMARY KEY CHECK(LENGTH(Acc_num)=4), " +	//卡号，4位，不重复
-		                   " Acc_id   TEXT CHECK(LENGTH(Acc_id)>=12), " + //id长度至少为12位，唯一
-		                   " Acc_name         TEXT    NOT NULL, " + 
-		                   " Acc_passwd       TEXT    NOT NULL CHECK(LENGTH(Acc_passwd)>=6), " +  //密码长度大于6
-		                   " Acc_deposit      REAL DEFAULT 0.00, " + 
-		                   " Acc_cale         TEXT ) "; 
+		       
+		     /*创建图片表
+		      String sql = "CREATE TABLE IMAGE " +
+		                   "(Image_id INT(8) PRIMARY KEY AUTO_INCREMENT, " +	//卡号，4位，不重复
+		                   " Image_path TEXT NOT NULL) "; 
 		      stmt.executeUpdate(sql);
-		      //创建普通管理员表
-		      sql = "CREATE TABLE MANAGER " +
-	                "(Gene_num   TEXT PRIMARY KEY CHECK(LENGTH(Gene_num)=6), " +	//卡号，6位，不重复
-	                " Gene_name  TEXT, " + 
-	                " Gene_passwd    TEXT NOT NULL CHECK(LENGTH(Gene_passwd)>=6) ) ";//密码长度大于6
-	                        
-		      stmt.executeUpdate(sql);      
+		     */ 
+		      //创建标签表
+		     String sql = "CREATE TABLE TAG " +
+	                "(Tag_id   INT(8) PRIMARY KEY, " +	//标签Id
+	                " Tag_name  TEXT NOT NULL) ";
+	                       
+		      stmt.executeUpdate(sql);    
+		      
+		      //创建图片-标签关系表
+		      sql = "CREATE TABLE RELATIONSHIP " +
+	                "(Image_id  TEXT NOT NULL , " +	//图片 绝对路径
+	                " Tag_id  INT NOT NULL , "+	//标签
+	                "PRIMARY KEY(Image_id, Tag_id) )";	//作联合主键
+	                       
+		      stmt.executeUpdate(sql);
+		      
 		      stmt.close();
 		      c.close();
 		    } catch ( Exception e ) {

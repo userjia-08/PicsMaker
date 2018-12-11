@@ -68,7 +68,9 @@ public class BuildImages {
 	    public static void buildImageFromView(Activity activity) {    
 	    	
 	    	// View是你需要截图的View
+
 			View view = activity.getWindow().getDecorView().findViewById(R.id.mylayout);
+
 			view.setDrawingCacheEnabled(true);
 			view.buildDrawingCache();
 			Bitmap b1 = view.getDrawingCache();

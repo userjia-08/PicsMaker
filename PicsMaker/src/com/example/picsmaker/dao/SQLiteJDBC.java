@@ -30,14 +30,14 @@ class SQLiteJDBC {
 		    	c = connectSQLiteDB();
 		       stmt = c.createStatement();
 		       
-		     /*创建图片表
+		     //创建图片表
 		      String sql = "CREATE TABLE IMAGE " +
 		                   "(Image_id INT(8) PRIMARY KEY AUTO_INCREMENT, " +	//卡号，4位，不重复
 		                   " Image_path TEXT NOT NULL) "; 
 		      stmt.executeUpdate(sql);
-		     */ 
+		      
 		      //创建标签表
-		     String sql = "CREATE TABLE TAG " +
+		      sql = "CREATE TABLE TAG " +
 	                "(Tag_id   INT(8) PRIMARY KEY, " +	//标签Id
 	                " Tag_name  TEXT NOT NULL) ";
 	                       

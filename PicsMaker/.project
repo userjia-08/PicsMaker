@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
+	<name>MainActivity</name>
+=======
 	<name>PicsMaker</name>
+>>>>>>> 746ce4c54a30e12f773ab0e02f06a34e2ce99b5c
 	<comment></comment>
 	<projects>
 	</projects>

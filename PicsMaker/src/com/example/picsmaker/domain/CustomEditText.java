@@ -1,5 +1,5 @@
 package com.example.picsmaker.domain;
-
+//textview，显示文字
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -58,6 +58,11 @@ public class CustomEditText extends TextView{
 		return this.font;
 	}
 	
+	@Override
+	public boolean performClick() {
+	  return super.performClick();
+	}
+
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -127,6 +132,7 @@ public class CustomEditText extends TextView{
 	            break;
 	        case MotionEvent.ACTION_UP:
 	            // 手指抬起
+	        	performClick();
 	            break;
 	        case MotionEvent.ACTION_CANCEL:
 	            // 事件被拦截 
@@ -141,6 +147,8 @@ public class CustomEditText extends TextView{
 	    }
 	    return super.onTouchEvent(event);
 	}
+	
+	
 	
 	private float spacing(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);

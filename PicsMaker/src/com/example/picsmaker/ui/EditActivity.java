@@ -2,7 +2,9 @@ package com.example.picsmaker.ui;
 
 //import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,10 +20,12 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import com.example.picsmaker.R;
@@ -34,6 +38,7 @@ import com.example.picsmaker.entity.background;
 import com.example.picsmaker.adapter.BackgroundAdapter;
 import com.example.picsmaker.adapter.MaterialAdapter;
 import com.example.picsmaker.adapter.TextAdapter;
+import com.example.picsmaker.utility.*;
 
 import android.app.Activity;
 import android.content.Context;
@@ -65,6 +70,7 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 	private boolean two_selected = false;
 	private boolean three_selected = false;
 	private FrameLayout frame;
+	private ImageView success;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,7 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 		spinnerBackground = (Spinner) findViewById(R.id.spinner1);
 		spinnerMaterial = (Spinner) findViewById(R.id.spinner2);
 		spinnerText = (Spinner) findViewById(R.id.spinner3);
+		success = (ImageView) findViewById(R.id.imageView2);
 		//final Material mezi = new Material(EditActivity.this,R.drawable.ic_launcher);
 		
 		mMaterial.add(new Material(EditActivity.this,R.drawable.m1));
@@ -111,7 +118,7 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 		
 		mData.add(new background(getResources().getDrawable(R.drawable.back),R.drawable.back,"±³¾°1"));
 		//mData.add(new background(getResources().getDrawable(R.drawable.b1),R.drawable.b1,"±³¾°2"));
-//		mData.add(new background(getResources().getDrawable(R.drawable.b2),R.drawable.b2,"±³¾°3"));
+		//mData.add(new background(getResources().getDrawable(R.drawable.b2),R.drawable.b2,"±³¾°3"));
 //		mData.add(new background(getResources().getDrawable(R.drawable.b3),R.drawable.b3,"±³¾°4"));
 //		mData.add(new background(getResources().getDrawable(R.drawable.b4),R.drawable.b4,"±³¾°5"));
 //		mData.add(new background(getResources().getDrawable(R.drawable.b5),R.drawable.b5,"±³¾°6"));
@@ -129,6 +136,28 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
         myTextAdapter = new TextAdapter(this,R.layout.item_spin_text,mText);
         spinnerText.setAdapter(myTextAdapter);
         spinnerText.setOnItemSelectedListener((OnItemSelectedListener) this);
+        
+        BuildImages.CreateGallery(this);
+        
+        success.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				BuildImages.buildImageFromView(EditActivity.this);
+			}
+        	
+        });
+        
+        frame.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				KeyboardUtils.hideKeyboard(EditActivity.this);
+			}
+        	
+        });
       
 	}
 	
@@ -156,6 +185,23 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
          case R.id.spinner3:
         	 if(three_selected){
         		final CustomEditText selectedItem = ((CustomEditText) parent.getItemAtPosition(position));
+        		selectedItem.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						//Éú³Éedittext
+						EditText editText = new EditText(mContext);
+						int height = getBottomStatusHeight(mContext);
+						editText.setX(selectedItem.getX());
+						editText.setY(selectedItem.getY()-height);
+						editText.setHint("Picture Maker");
+						
+						Log.d("HHHH","µã»÷textview");
+						frame.addView(editText);
+					}
+        			
+        		});
         		frame.addView(selectedItem);
              } else three_selected = true;
          break;
@@ -175,7 +221,47 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 		Log.d("HHHH", "µã»÷textview");
 	}
 	
+	
+	public static int getDpi(Context context) {
+        int dpi = 0;
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        @SuppressWarnings("rawtypes")
+        Class c;
+        try {
+            c = Class.forName("android.view.Display");
+            @SuppressWarnings("unchecked")
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
+            method.invoke(display, displayMetrics);
+            dpi = displayMetrics.heightPixels;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dpi;
+    }
+	
+	public static int getScreenHeight(Context context) {
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.heightPixels;
+    }
+	
+	/**
+     * »ñÈ¡ ÐéÄâ°´¼üµÄ¸ß¶È
+     *
+     * @param context
+     * @return
+     */
+    public static int getBottomStatusHeight(Context context) {
+        int totalHeight = getDpi(context);
 
+        int contentHeight = getScreenHeight(context);
+
+        return totalHeight - contentHeight;
+    }
 	
 
 	

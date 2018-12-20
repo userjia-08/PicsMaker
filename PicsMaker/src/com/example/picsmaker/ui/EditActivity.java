@@ -22,6 +22,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,7 +35,6 @@ import com.example.picsmaker.R;
 import com.example.picsmaker.R.layout;
 import com.example.picsmaker.ui.MainActivity;
 import com.example.picsmaker.domain.CustomEditText;
-import com.example.picsmaker.domain.CustomEditText.textClick;
 import com.example.picsmaker.domain.Material;
 import com.example.picsmaker.entity.background;
 import com.example.picsmaker.adapter.BackgroundAdapter;
@@ -47,12 +49,13 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class EditActivity extends Activity implements AdapterView.OnItemSelectedListener,textClick {
+public class EditActivity extends Activity implements AdapterView.OnItemSelectedListener{
 	
 	private Spinner spinnerBackground;
 	private Spinner spinnerMaterial;
@@ -71,6 +74,9 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 	private boolean three_selected = false;
 	private FrameLayout frame;
 	private ImageView success;
+	private LayoutParams lp;
+	private EditText editText;
+	private ImageView confirm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,8 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 		mMaterial = new ArrayList<Material>();
 		mText = new ArrayList<CustomEditText>();
 		frame = (FrameLayout) findViewById(R.id.mylayout);
+		confirm = (ImageView) findViewById(R.id.imageView3);
+		editText = (EditText) findViewById(R.id.EditText);
 		init();    
 	}
 	
@@ -149,6 +157,16 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
         	
         });
         
+        confirm.setOnClickListener(new OnClickListener() {
+        	@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				RelativeLayout original = (RelativeLayout) findViewById(R.id.relativeLayout1);
+				original.setVisibility(View.VISIBLE);
+				KeyboardUtils.hideKeyboard(EditActivity.this);
+			}
+        });
+        
         frame.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -184,84 +202,48 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
          
          case R.id.spinner3:
         	 if(three_selected){
+        		final Intent intent = new Intent(EditActivity.this, EditTextActivity.class);
         		final CustomEditText selectedItem = ((CustomEditText) parent.getItemAtPosition(position));
         		selectedItem.setOnClickListener(new OnClickListener() {
-
+        			
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						//生成edittext
-						EditText editText = new EditText(mContext);
-						int height = getBottomStatusHeight(mContext);
-						editText.setX(selectedItem.getX());
-						editText.setY(selectedItem.getY()-height);
-						editText.setHint("Picture Maker");
+						//切换界面
+						RelativeLayout original = (RelativeLayout) findViewById(R.id.relativeLayout1);
+						original.setVisibility(View.GONE);
 						
-						Log.d("HHHH","点击textview");
-						frame.addView(editText);
+//						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//								150,
+//								150);
+//						lp.setMargins(0, 0, 0, 0);
+//						((LinearLayout) findViewById(R.id.linearLayout1))
+//								.setLayoutParams(lp);
+						
 					}
         			
         		});
         		frame.addView(selectedItem);
+        		selectedItem.setText(editText.getText().toString());
              } else three_selected = true;
          break;
    
      }
 	}
-
+//
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void onTextClick() {
-		// TODO Auto-generated method stub
-		Log.d("HHHH", "点击textview");
-	}
-	
-	
-	public static int getDpi(Context context) {
-        int dpi = 0;
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        @SuppressWarnings("rawtypes")
-        Class c;
-        try {
-            c = Class.forName("android.view.Display");
-            @SuppressWarnings("unchecked")
-            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
-            method.invoke(display, displayMetrics);
-            dpi = displayMetrics.heightPixels;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dpi;
-    }
-	
-	public static int getScreenHeight(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.heightPixels;
-    }
-	
-	/**
-     * 获取 虚拟按键的高度
-     *
-     * @param context
-     * @return
-     */
-    public static int getBottomStatusHeight(Context context) {
-        int totalHeight = getDpi(context);
-
-        int contentHeight = getScreenHeight(context);
-
-        return totalHeight - contentHeight;
-    }
+//
+//	@Override
+//	public void onTextClick() {
+//		// TODO Auto-generated method stub
+//		Log.d("HHHH", "点击textview");
+//	}
+//	
+//	
 	
 
 	

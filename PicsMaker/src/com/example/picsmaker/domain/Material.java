@@ -2,9 +2,11 @@
 package com.example.picsmaker.domain;
 import com.example.picsmaker.R;
 
+import android.R.color;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;  
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;  
 import android.graphics.BitmapFactory;  
 import android.graphics.Canvas;
@@ -55,17 +57,18 @@ public class Material extends ImageView {
     private float mMaxScaleFactor = 3.0f;
     //最小缩放比例因子
     private float mMinScaleFactor = 0.8f;
+    private Paint mPaint = new Paint();
+    private Canvas mCanvas = new Canvas();
     	
   
     public Material(Context context,int _id) {  
         super(context);  
-        //设置妹子的起始坐标  
-        //bitmapX = 0;  
-        //bitmapY = 200;  
         this.drawable_id = _id;
         this.setImageResource(_id);
         //设置刻度类型
         this.setScaleType(ScaleType.MATRIX);
+    
+        
         //this.setImageDrawable(getResources().getDrawable(drawable_id));
     }  
     
@@ -79,7 +82,7 @@ public class Material extends ImageView {
 
     public Material(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        //init(context, attrs);
+    
     }
  
     //重写View类的onDraw()方法  
@@ -87,6 +90,15 @@ public class Material extends ImageView {
     	return this.drawable_id;
     }
     
+    public void Draw(Canvas canvas) {
+    	mPaint.setStyle(Paint.Style.FILL);
+    	mPaint.setColor(color.black);
+    	canvas.drawRect(mBoundRectF, mPaint);
+    }
+    
+    protected void onDraw() {
+    	initImagePositionAndSize();
+    }
     /**
      * 初始化放置图片
      * 将图片缩放和控件大小一致并移动图片中心和控件的中心重合
@@ -100,7 +112,7 @@ public class Material extends ImageView {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        //initImagePositionAndSize();
+        //this.setBackgroundResource(R.drawable.bg_border_stroke);
     }
     
     /**
@@ -118,6 +130,7 @@ public class Material extends ImageView {
         mCurrentMatrix.postTranslate(getPivotX() - mBoundRectF.centerX(), getPivotY() - mBoundRectF.centerY());
         //对图片进行变换，并更新图片的边界矩形
         transform();
+        
     }
 
     
@@ -299,6 +312,7 @@ public class Material extends ImageView {
         if (this.getDrawable() != null) {
             mBoundRectF.set(getDrawable().getBounds());
             mCurrentMatrix.mapRect(mBoundRectF);
+            Draw(mCanvas);
         }
     }
     

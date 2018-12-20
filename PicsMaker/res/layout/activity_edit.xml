@@ -1,5 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+<RelativeLayout 
+    android:id="@+id/relativeLayout1"
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
@@ -61,3 +67,28 @@
             android:text="相册" />
 
 </RelativeLayout>
+
+<LinearLayout 
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	<EditText
+	    android:id="@+id/EditText"
+	    android:layout_width="fill_parent"
+	    android:layout_height="200dp" >
+	</EditText>
+	
+	
+	<ImageView
+	    android:id="@+id/imageView3"
+	    android:layout_width="40dp"
+	    android:layout_height="40dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@+id/EditText"
+	    android:src="@drawable/confirm" />
+	
+</LinearLayout>
+
+</LinearLayout>

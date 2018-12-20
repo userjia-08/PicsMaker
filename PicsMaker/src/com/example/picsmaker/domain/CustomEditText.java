@@ -1,4 +1,8 @@
 package com.example.picsmaker.domain;
+import java.io.Serializable;
+
+import com.example.picsmaker.R;
+
 //textview，显示文字
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -7,6 +11,8 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +26,7 @@ public class CustomEditText extends TextView{
     private Typeface font;
     public float bitmapX;  
     public float bitmapY;  
-    private textClick mytextClick;
+  //  private textClick mytextClick;
     private float startx;// down事件发生时，手指相对于view左上角x轴的距离
     private float starty;// down事件发生时，手指相对于view左上角y轴的距离
     private float endx; // move事件发生时，手指相对于view左上角x轴的距离
@@ -52,6 +58,7 @@ public class CustomEditText extends TextView{
 		this.bitmapY = 200;
 		this.setHint("Picture Maker");
 		this.setClickable(true);
+		this.setBackgroundColor(R.drawable.bg_border_stroke);
 	}
 	
 	public Typeface getFontFamily() {
@@ -182,19 +189,10 @@ public class CustomEditText extends TextView{
         return -angle;
     }
     
-    public interface textClick {
-        void onTextClick();
-    }
     
-    public textClick getTextClick() {
-        return mytextClick;
+    public void onClick() {
+    	Log.i("HHH", "click!");
     }
-    public void setTextClick(textClick mytextClick) {
-        this.mytextClick = mytextClick;
-    }
-
-
-
 	
 
 }
